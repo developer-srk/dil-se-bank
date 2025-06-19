@@ -1,6 +1,7 @@
-Flask
+Flask>=2.3
 Flask-Bcrypt
 Flask-JWT-Extended
 Flask-SQLAlchemy
 python-dotenv
 gunicorn
+psycopg2-binary
