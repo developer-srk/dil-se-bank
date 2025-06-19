@@ -1,0 +1,178 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f8fb;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 240px;
+    background: #1e2a38;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0 32px 32px 32px;
+    gap: 10px;
+}
+
+.sidebar nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar nav ul li {
+    padding: 16px 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 1.1em;
+    transition: background 0.2s;
+}
+
+.sidebar nav ul li.active,
+.sidebar nav ul li:hover {
+    background: #23344a;
+}
+
+.main-content {
+    flex: 1;
+    background: #f4f8fb;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+.logout-btn {
+    background: #e74c3c;
+    color: #fff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.logout-btn:hover {
+    background: #c0392b;
+}
+
+.dashboard {
+    display: flex;
+    gap: 32px;
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+    padding: 32px;
+    flex: 1;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.balance-card h3 {
+    margin: 0 0 12px 0;
+    color: #1e2a38;
+}
+
+#balance {
+    font-size: 2.2em;
+    color: #27ae60;
+    margin: 0;
+}
+
+.actions-card {
+    gap: 18px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.actions-card button {
+    background: #3498db;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.actions-card button:hover {
+    background: #217dbb;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(30, 42, 56, 0.25);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 32px 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 36px rgba(44, 62, 80, 0.12);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#loginForm input {
+    width: 220px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    border: 1px solid #dbe7f1;
+    border-radius: 6px;
+    font-size: 1em;
+}
+
+#loginForm button {
+    background: #27ae60;
+    color: #fff;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#loginForm button:hover {
+    background: #219150;
+}
