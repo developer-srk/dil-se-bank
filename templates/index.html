@@ -425,5 +425,35 @@
     renderFdList();
   }
 </script>
+<script>
+  // ✅ Profile Update Mail Trigger — added at the end, silently works
+  document.getElementById('profileForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('access_token');
+
+    const data = {
+      name: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      address: document.getElementById('address').value,
+      dateOfBirth: document.getElementById('dateOfBirth').value,
+      accountType: document.getElementById('accountType').value
+    };
+
+    const res = await fetch('/api/profile/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+    alert(result.message || 'Profile updated!');
+  });
+</script>
+
 </body>
 </html>
