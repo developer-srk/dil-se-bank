@@ -1,3 +1,5 @@
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
@@ -5,21 +7,24 @@ from flask_jwt_extended import (
     JWTManager, create_access_token, jwt_required, get_jwt_identity
 )
 from datetime import timedelta
-import secrets
 from decimal import Decimal
+import os  # ✅ for environment variables
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = secrets.token_hex(32)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:Sairaj%402000@db.hhfdplhaplsyjgqdlmrm.supabase.co:5432/postgres'
+
+# ✅ Secure Config from Render Environment
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('SQLALCHEMY_DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['JWT_SECRET_KEY'] = secrets.token_hex(32)
+app.config['JWT_SECRET_KEY'] = os.environ.get('JWT_SECRET_KEY')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=12)
 
+# ✅ Extensions
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
-# Models
+# ✅ Models
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
@@ -37,15 +42,15 @@ def generate_account_number():
     import random
     return f"DSB{random.randint(10000000, 99999999)}"
 
-# Initialize DB
+# ✅ Create tables if not exist
 with app.app_context():
     db.create_all()
 
+# ✅ Routes
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# Registration
 @app.route('/api/register', methods=['POST'])
 def register():
     data = request.get_json()
@@ -60,13 +65,11 @@ def register():
     user = User(name=name, email=email, password_hash=pw_hash)
     db.session.add(user)
     db.session.commit()
-    # Create account
     account = Account(account_number=generate_account_number(), user_id=user.id, balance=0)
     db.session.add(account)
     db.session.commit()
     return jsonify({'message': 'Registration successful! Please login.'}), 201
 
-# Login
 @app.route('/api/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -83,7 +86,6 @@ def login():
         })
     return jsonify({'error': 'Invalid credentials'}), 401
 
-# Get Account Info
 @app.route('/api/account', methods=['GET'])
 @jwt_required()
 def account():
@@ -97,7 +99,6 @@ def account():
         'balance': float(user.account.balance)
     })
 
-# Deposit
 @app.route('/api/deposit', methods=['POST'])
 @jwt_required()
 def deposit():
@@ -110,7 +111,6 @@ def deposit():
     db.session.commit()
     return jsonify({'message': 'Deposit successful', 'balance': float(user.account.balance)})
 
-# Withdraw
 @app.route('/api/withdraw', methods=['POST'])
 @jwt_required()
 def withdraw():
@@ -123,5 +123,7 @@ def withdraw():
     db.session.commit()
     return jsonify({'message': 'Withdrawal successful', 'balance': float(user.account.balance)})
 
+# ✅ For Render deployment
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
